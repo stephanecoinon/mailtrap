@@ -3,8 +3,10 @@
 namespace Tests;
 
 use Dotenv\Dotenv;
+use Mockery as m;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use StephaneCoinon\Mailtrap\Client;
+use StephaneCoinon\Mailtrap\Inbox;
 use StephaneCoinon\Mailtrap\Model;
 
 class TestCase extends BaseTestCase
@@ -16,6 +18,11 @@ class TestCase extends BaseTestCase
     {
         $this->loadConfiguration();
         $this->bootModel();
+    }
+
+    public function tearDown()
+    {
+        m::close();
     }
 
     protected function loadConfiguration()

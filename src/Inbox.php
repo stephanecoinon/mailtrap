@@ -48,4 +48,22 @@ class Inbox extends Model
     {
         return $this->model(Message::class)->get('inboxes/'.$this->id.'/messages/'.$id);
     }
+
+    /**
+     * Get the last/newest message.
+     *
+     * @return null|StephaneCoinon\Mailtrap\Message null if inbox is empty
+     */
+    public function lastMessage()
+    {
+        $messages = $this->messages();
+
+        if (! count($messages)) {
+            return null;
+        }
+
+        // API returns messages from newest to oldest so last message is the
+        // first one of the list
+        return $messages[0];
+    }
 }
