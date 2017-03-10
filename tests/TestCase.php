@@ -25,6 +25,16 @@ class TestCase extends BaseTestCase
         m::close();
     }
 
+    /**
+     * Get the demo inbox.
+     *
+     * @return StephaneCoinon\Mailtrap\Inbox
+     */
+    public function getDemoInbox()
+    {
+        return Inbox::find(getenv('INBOX_ID'));
+    }
+
     protected function loadConfiguration()
     {
         $dotenv = new Dotenv(__DIR__);
