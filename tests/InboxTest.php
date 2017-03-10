@@ -65,4 +65,23 @@ class InboxTest extends TestCase
 
         $this->assertSame($lastMessage, $inbox->lastMessage());
     }
+
+    /** @test */
+    public function hasMessageFor()
+    {
+        $emails = [
+            'john@example.com',
+            'jane@example.org',
+            'paul@example.co.uk',
+        ];
+        $messages = array_map(function ($email) {
+            return new Message(['to_email' => $email]);
+        }, $emails);
+
+        $inbox = m::mock(Inbox::class)->makePartial();
+        $inbox->shouldReceive('messages')->twice()->andReturn($messages);
+
+        $this->assertTrue($inbox->hasMessageFor('jane@example.org'));
+        $this->assertFalse($inbox->hasMessageFor('stephane@example.co.uk'));
+    }
 }

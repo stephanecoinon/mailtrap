@@ -66,4 +66,23 @@ class Inbox extends Model
         // first one of the list
         return $messages[0];
     }
+
+    /**
+     * Does the inbox contain a message for a given recipient e-mail?
+     *
+     * @param  string  $email
+     * @return boolean
+     */
+    public function hasMessageFor($email)
+    {
+        $messages = $this->messages();
+
+        foreach ($messages as $message) {
+            if (in_array($email, $message->recipientEmails())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
