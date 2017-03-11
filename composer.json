@@ -1,5 +1,7 @@
 {
     "name": "stephanecoinon/mailtrap",
+    "description": "PHP client for Mailtrap.",
+    "homepage": "https://github.com/stephanecoinon/mailtrap",
     "license": "MIT",
     "authors": [
         {
