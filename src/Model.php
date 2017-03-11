@@ -7,6 +7,14 @@ class Model
     /** @var StephaneCoinon\Mailtrap\Client */
     protected static $client;
 
+    /**
+     * Closure transforming arrays of models into another "collection-like" type.
+     * If null, arrays will not be transformed.
+     *
+     * @var null|callable
+     */
+    protected static $collectionClosure = null;
+
     /** @var array */
     protected $attributes;
 
@@ -22,6 +30,28 @@ class Model
     public static function boot($client)
     {
         static::$client = $client;
+    }
+
+    /**
+     * Configure models to return Laravel collections instead of arrays.
+     *
+     * @return void
+     */
+    public static function returnArraysAsLaravelCollections()
+    {
+        static::$collectionClosure = function ($objects) {
+            return collect($objects);
+        };
+    }
+
+    /**
+     * Configure models to return plain arrays.
+     *
+     * @return void
+     */
+    public static function returnArrays()
+    {
+        static::$collectionClosure = null;
     }
 
     /**
@@ -91,9 +121,12 @@ class Model
 
         // Cast an array of objects
         if (is_array($data)) {
-            return array_map(function ($object) {
+            // Cast the objects returned by the API into models
+            $array = array_map(function ($object) {
                 return $this->cast($object);
             }, $data);
+            // Return the "collection" of models
+            return $this->collect($array);
         }
 
         // Do we cast to our own model or a different one?
@@ -103,6 +136,27 @@ class Model
         $instance = new $model((array) $data);
 
         return $instance;
+    }
+
+    /**
+     * Return a "collection" of models as per type defined with
+     * returnArraysAsXxx() methods.
+     *
+     * @param  array  $models
+     * @return mixed
+     */
+    public function collect(array $models)
+    {
+        $closure = static::$collectionClosure;
+
+        // No collection closure defined so return array of models as-is
+        if (is_null($closure)) {
+            return $models;
+        }
+
+        // Call the closure to transform the array into the type of collection
+        // defined
+        return $closure($models);
     }
 
     /**

@@ -17,5 +17,6 @@ class MailtrapServiceProvider extends ServiceProvider
     {
         $client = new Client(config('services.mailtrap.token'));
         Model::boot($client);
+        Model::returnArraysAsLaravelCollections();
     }
 }

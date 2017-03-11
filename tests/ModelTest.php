@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Illuminate\Support\Collection;
 use StephaneCoinon\Mailtrap\Model;
 use Tests\TestCase;
 
@@ -41,11 +42,7 @@ class ModelTest extends TestCase
     /** @test */
     public function it_casts_an_array_of_objects()
     {
-        $plainObjects = [
-            (Object) ['id' => 123, 'name' => 'Demo Inbox'],
-            (Object) ['id' => 456, 'name' => 'Test Inbox'],
-            (Object) ['id' => 789, 'name' => 'Another Inbox'],
-        ];
+        $plainObjects = $this->fakeApiArrayResponse();
 
         $expectedArray = array_map(function ($modelAttributes) {
             return new ModelStub((array) $modelAttributes);
@@ -59,11 +56,7 @@ class ModelTest extends TestCase
     /** @test */
     public function it_casts_an_array_of_objects_to_a_different_model_class()
     {
-        $plainObjects = [
-            (Object) ['id' => 123, 'name' => 'Demo Inbox'],
-            (Object) ['id' => 456, 'name' => 'Test Inbox'],
-            (Object) ['id' => 789, 'name' => 'Another Inbox'],
-        ];
+        $plainObjects = $this->fakeApiArrayResponse();
 
         $expectedArray = array_map(function ($modelAttributes) {
             return new AnotherModelStub((array) $modelAttributes);
@@ -72,6 +65,28 @@ class ModelTest extends TestCase
         $models = (new ModelStub)->model(AnotherModelStub::class)->cast($plainObjects);
 
         $this->assertEquals($expectedArray, $models);
+    }
+
+    /** @test */
+    public function it_can_return_a_collection_instead_of_an_array()
+    {
+        $apiResponse = $this->fakeApiArrayResponse();
+
+        Model::returnArraysAsLaravelCollections();
+
+        $models = (new ModelStub)->cast($apiResponse);
+
+        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $models);
+        $this->assertCount(count($apiResponse), $models);
+    }
+
+    public function fakeApiArrayResponse()
+    {
+        return [
+            (Object) ['id' => 123, 'name' => 'Demo Inbox'],
+            (Object) ['id' => 456, 'name' => 'Test Inbox'],
+            (Object) ['id' => 789, 'name' => 'Another Inbox'],
+        ];
     }
 }
 
