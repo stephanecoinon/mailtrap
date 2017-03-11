@@ -54,7 +54,12 @@ class Model
      */
     public function get($uri, $parameters = [], $headers = [])
     {
-        return $this->cast(static::$client->get($uri, $parameters, $headers));
+        $response = $this->cast(static::$client->get($uri, $parameters, $headers));
+
+        // Reset model class for next request
+        $this->model = null;
+
+        return $response;
     }
 
     /**
@@ -96,9 +101,6 @@ class Model
 
         // Cast a single object
         $instance = new $model((array) $data);
-
-        // Reset model class for next request
-        $this->model = null;
 
         return $instance;
     }

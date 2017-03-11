@@ -55,10 +55,33 @@ class ModelTest extends TestCase
 
         $this->assertEquals($expectedArray, $models);
     }
+
+    /** @test */
+    public function it_casts_an_array_of_objects_to_a_different_model_class()
+    {
+        $plainObjects = [
+            (Object) ['id' => 123, 'name' => 'Demo Inbox'],
+            (Object) ['id' => 456, 'name' => 'Test Inbox'],
+            (Object) ['id' => 789, 'name' => 'Another Inbox'],
+        ];
+
+        $expectedArray = array_map(function ($modelAttributes) {
+            return new AnotherModelStub((array) $modelAttributes);
+        }, $plainObjects);
+
+        $models = (new ModelStub)->model(AnotherModelStub::class)->cast($plainObjects);
+
+        $this->assertEquals($expectedArray, $models);
+    }
 }
 
 
 class ModelStub extends Model
+{
+
+}
+
+class AnotherModelStub extends Model
 {
 
 }
