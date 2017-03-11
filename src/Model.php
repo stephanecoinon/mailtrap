@@ -25,6 +25,16 @@ class Model
     }
 
     /**
+     * Get the API client.
+     *
+     * @return StephaneCoinon\Mailtrap\Client
+     */
+    public static function getClient()
+    {
+        return static::$client;
+    }
+
+    /**
      * Make a new Model instance.
      *
      * @param array $attributes
