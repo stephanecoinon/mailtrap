@@ -85,4 +85,17 @@ class Inbox extends Model
 
         return false;
     }
+
+    /**
+     * Clean an inbox of all messages
+     *
+     * @param  int $id      The id of the inbox to clean; if not set, clean the inbox that is calling this
+     *                      method.
+     * @return Inbox        The inbox that was cleaned
+     */
+    public function clean($id = null)
+    {
+        $id = (isset($id)) ? $id : $this->attributes['id'];
+        return (new static)->patch('inboxes/' . $id . '/clean');
+    }
 }

@@ -93,6 +93,23 @@ class Model
     }
 
     /**
+     * Make an API "PATCH" request.
+     *
+     * @param  string $uri
+     * @param  array  $parameters
+     * @param  array  $headers
+     * @return array|static
+     */
+    public function patch($uri, $parameters = [], $headers = [])
+    {
+        $response = $this->cast(static::$client->patch($uri, $parameters, $headers));
+        // Reset model class for next request
+        $this->model = null;
+
+        return $response;
+    }
+
+    /**
      * Specify which Model to use to cast the response for the next request.
      *
      * @param  StephaneCoinon\Mailtrap\Model $model subclass of StephaneCoinon\Mailtrap\Model
