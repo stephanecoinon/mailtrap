@@ -27,5 +27,12 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "StephaneCoinon\\Mailtrap\\MailtrapServiceProvider"
+            ]
+        }
     }
 }

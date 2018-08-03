@@ -37,7 +37,7 @@ Then add mailtrap in your ```config/services.php``` configuration:
 ],
 ```
 
-Finally register the Mailtrap service provider in your ```config/app.php```:
+Finally, if your app runs on Laravel < 5.5, register the Mailtrap service provider in ```config/app.php```:
 
 ```php
 'providers' => [
@@ -53,6 +53,8 @@ Finally register the Mailtrap service provider in your ```config/app.php```:
     // ...
 ],
 ```
+
+Otherwise it will be discovered automatically on Laravel >= 5.5.
 
 ## Usage
 
