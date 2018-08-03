@@ -87,13 +87,13 @@ class Inbox extends Model
     }
 
     /**
-     * Clean an inbox of all messages
+     * Empty an inbox of all messages using the Mailtrap API clean method
      *
      * @param  int $id      The id of the inbox to clean; if not set, clean the inbox that is calling this
      *                      method.
      * @return Inbox        The inbox that was cleaned
      */
-    public function clean($id = null)
+    public function empty($id = null)
     {
         $id = (isset($id)) ? $id : $this->attributes['id'];
         return (new static)->patch('inboxes/' . $id . '/clean');
