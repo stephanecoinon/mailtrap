@@ -1,2 +1,3 @@
 /tests/.env
 /vendor
+composer.lock
