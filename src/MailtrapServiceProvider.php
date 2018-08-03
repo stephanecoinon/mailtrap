@@ -19,4 +19,14 @@ class MailtrapServiceProvider extends ServiceProvider
         Model::boot($client);
         Model::returnArraysAsLaravelCollections();
     }
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
 }
