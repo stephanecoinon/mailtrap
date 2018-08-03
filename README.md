@@ -76,6 +76,10 @@ $message = $inbox->message(123456789);
 // Get the last (newest) message in an inbox
 $newestMessage = $inbox->lastMessage();
 
+// Delete all messages from an inbox
+$inbox = $inbox->empty();
+$inbox = (new Inbox)->empty(1234); // alternative syntax using the inbox id
+
 // Determine whether the inbox contains a message for a given recipient e-mail
 $recipientReceivedMessage = $inbox->hasMessageFor('john@example.com');
 
