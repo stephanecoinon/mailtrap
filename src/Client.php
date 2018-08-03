@@ -76,6 +76,20 @@ class Client
     }
 
     /**
+     * Make a "PATCH" API request.
+     *
+     * @param  string $uri        request uri relative to base uri set in constructor
+     * @param  array  $parameters request parameters
+     * @param  array  $headers    request headers
+     *
+     * @return Object|array
+     */
+    public function patch($uri, $parameters = [], $headers = [])
+    {
+        return $this->request('PATCH', $uri, $parameters, $headers);
+    }
+
+    /**
      * Set response errors.
      *
      * @param MailtrapException $exception
