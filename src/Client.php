@@ -58,8 +58,9 @@ class Client
             $this->setErrors($mailtrapException);
             return null;
         }
-
-        return json_decode($response->getBody());
+        $body = $response->getBody();
+        $json = json_decode($body);
+        return (json_last_error() === JSON_ERROR_NONE) ? $json : (string)$body;
     }
 
     /**
