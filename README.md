@@ -72,6 +72,10 @@ $messages = $inbox->messages();
 
 // Get a message by its id
 $message = $inbox->message(123456789);
+$message->htmlBody(); // Get the HTML body (also sets html_body attribute on the message)
+$message->textBody(); // Get the plain text body (also sets txt_body attribute on the message)
+$message->rawBody(); // Get the raw body (also sets raw_body attribute on the message)
+$message->headers(); // Get the headers as an array (also sets headers attribute on the message)
 
 // Get the last (newest) message in an inbox
 $newestMessage = $inbox->lastMessage();

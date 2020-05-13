@@ -47,4 +47,12 @@ class TestCase extends BaseTestCase
     {
         Model::boot($this->client);
     }
+
+    protected function mockClient()
+    {
+        $client = m::mock(Client::class)->makePartial();
+        Model::boot($client);
+
+        return $client;
+    }
 }

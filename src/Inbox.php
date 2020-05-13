@@ -2,7 +2,6 @@
 
 namespace StephaneCoinon\Mailtrap;
 
-use StephaneCoinon\Mailtrap\Exceptions\MailtrapException;
 use StephaneCoinon\Mailtrap\Message;
 
 class Inbox extends Model
@@ -14,7 +13,7 @@ class Inbox extends Model
      */
     public static function all()
     {
-        return (new static)->get('inboxes');
+        return ($model = new static)->get($model->apiUrl('inboxes'));
     }
 
     /**
@@ -25,7 +24,7 @@ class Inbox extends Model
      */
     public static function find($id)
     {
-        return (new static)->get('inboxes/'.$id);
+        return ($model = new static)->get($model->apiUrl('inboxes/'.$id));
     }
 
     /**
@@ -35,7 +34,7 @@ class Inbox extends Model
      */
     public function messages()
     {
-        return $this->model(Message::class)->get('inboxes/'.$this->id.'/messages');
+        return $this->model(Message::class)->get($this->apiUrl('inboxes/'.$this->id.'/messages'));
     }
 
     /**
@@ -46,7 +45,7 @@ class Inbox extends Model
      */
     public function message($id)
     {
-        return $this->model(Message::class)->get('inboxes/'.$this->id.'/messages/'.$id);
+        return $this->model(Message::class)->get($this->apiUrl('inboxes/'.$this->id.'/messages/'.$id));
     }
 
     /**
@@ -96,6 +95,7 @@ class Inbox extends Model
     public function empty($id = null)
     {
         $id = (isset($id)) ? $id : $this->attributes['id'];
-        return (new static)->patch('inboxes/' . $id . '/clean');
+
+        return (new static)->patch($this->apiUrl('inboxes/' . $id . '/clean'));
     }
 }

@@ -27,17 +27,52 @@ class Message extends Model
     }
 
     /**
-     * Get the message body
+     * Get the HTML message body
      *
-     * @return string   The email body
+     * @return string   The HTML email body
      */
-    public function body()
+    public function htmlBody()
     {
-        $fullPathParts = explode("/", $this->html_path);
-        $partialPath = join("/", array_slice($fullPathParts, 3));
-        $this->body = (new Model())->get($partialPath)->getAttributes()[0];
-        return $this->body;
+        $this->html_body = $this->getRaw($this->html_path);
+
+        return $this->html_body;
     }
 
+    /**
+     * Get the TEXT message body
+     *
+     * @return string   The TEXT email body
+     */
+    public function textBody()
+    {
+        $this->txt_body = $this->getRaw($this->txt_path);
 
+        return $this->txt_body;
+    }
+
+    /**
+     * Get the RAW message body
+     *
+     * @return string   The RAW email body
+     */
+    public function rawBody()
+    {
+        $this->raw_body = $this->getRaw($this->raw_path);
+
+        return $this->raw_body;
+    }
+
+    /**
+     * Get the message headers
+     *
+     * @return array   The headers
+     */
+    public function headers()
+    {
+        $this->headers = (array) $this->getRaw($this->apiUrl(
+            'inboxes/'.$this->inbox_id.'/messages/'.$this->id.'/mail_headers'
+        ))->headers;
+
+        return $this->headers;
+    }
 }
