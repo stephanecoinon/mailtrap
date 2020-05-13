@@ -33,8 +33,8 @@ class Message extends Model
      */
     public function htmlBody()
     {
-        $partialPath = self::partialPath($this->html_path);
-        $this->html_body = static::$client->get($partialPath);
+        $this->html_body = $this->getRaw($this->html_path);
+
         return $this->html_body;
     }
 
@@ -45,8 +45,8 @@ class Message extends Model
      */
     public function textBody()
     {
-        $partialPath = self::partialPath($this->txt_path);
-        $this->txt_body = static::$client->get($partialPath);
+        $this->txt_body = $this->getRaw($this->txt_path);
+
         return $this->txt_body;
     }
 
@@ -57,28 +57,22 @@ class Message extends Model
      */
     public function rawBody()
     {
-        $partialPath = self::partialPath($this->raw_path);
-        $this->raw_body = static::$client->get($partialPath);
+        $this->raw_body = $this->getRaw($this->raw_path);
 
         return $this->raw_body;
     }
 
     /**
-     * Get the message header
+     * Get the message headers
      *
      * @return array   The headers
      */
     public function headers()
     {
-        return static::$client->get('inboxes/'.$this->inbox_id.'/messages/'.$this->id.'/mail_headers');
+        $this->headers = (array) $this->getRaw($this->apiUrl(
+            'inboxes/'.$this->inbox_id.'/messages/'.$this->id.'/mail_headers'
+        ))->headers;
+
+        return $this->headers;
     }
-
-
-    private static function partialPath($path)
-    {
-        $fullPathParts = explode("/", $path);
-        return join("/", array_slice($fullPathParts, 3));
-    }
-
-
 }

@@ -5,7 +5,6 @@ namespace StephaneCoinon\Mailtrap;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\RequestException;
 use StephaneCoinon\Mailtrap\Exceptions\MailtrapException;
-use StephaneCoinon\Mailtrap\Inbox;
 
 class Client
 {
@@ -27,7 +26,7 @@ class Client
     {
         $this->apiToken = $apiToken;
         $this->http = new HttpClient([
-            'base_uri' => 'https://mailtrap.io/api/v1/',
+            'base_uri' => 'https://mailtrap.io/',
         ]);
     }
 

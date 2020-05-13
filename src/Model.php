@@ -74,8 +74,26 @@ class Model
         $this->attributes = $attributes;
     }
 
+    public function apiUrl($url)
+    {
+        return 'api/v1/' . $url;
+    }
+
     /**
-     * Make an API "GET" request.
+     * Make an API "GET" request and return the raw response.
+     *
+     * @param  string $uri
+     * @param  array  $parameters
+     * @param  array  $headers
+     * @return array
+     */
+    public function getRaw($uri, $parameters = [], $headers = [])
+    {
+        return static::$client->get($uri, $parameters, $headers);
+    }
+
+    /**
+     * Make an API "GET" request and return the cast response.
      *
      * @param  string $uri
      * @param  array  $parameters
@@ -84,7 +102,7 @@ class Model
      */
     public function get($uri, $parameters = [], $headers = [])
     {
-        $response = $this->cast(static::$client->get($uri, $parameters, $headers));
+        $response = $this->cast($this->getRaw($uri, $parameters, $headers));
 
         // Reset model class for next request
         $this->model = null;
@@ -195,5 +213,17 @@ class Model
     public function __get($name)
     {
         return isset($this->attributes[$name]) ? $this->attributes[$name] : null;
+    }
+
+    /**
+     * Allow to set a model attribute as if it was an instance property.
+     *
+     * @param  string $name attribute name
+     * @param  mixed $value attribute value
+     * @return void
+     */
+    public function __set($name, $value)
+    {
+        $this->attributes[$name] = $value;
     }
 }
